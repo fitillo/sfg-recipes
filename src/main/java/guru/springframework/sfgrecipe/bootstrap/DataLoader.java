@@ -33,16 +33,16 @@ public class DataLoader implements CommandLineRunner {
         Category fastFood = categoryRepository.findByName("Fast Food").get();
 
         Recipe guacamole = new Recipe();
-        avocados.setRecipe(guacamole);
-        salt.setRecipe(guacamole);
-        guacamole.getIngredients().add(avocados);
-        guacamole.getIngredients().add(salt);
+        /*avocados.setRecipe(guacamole);
+        salt.setRecipe(guacamole);*/
+        guacamole.addIngredient(avocados);
+        guacamole.addIngredient(salt);
 
         Note note = new Note();
         note.setNotes("The trick to making perfect guacamole is using ripe avocados that are just the right amount of ripeness. Not ripe enough and the avocado will be hard and tasteless. Too ripe and the taste will be off.\n" +
                 "\n" +
                 "Check for ripeness by gently pressing the outside of the avocado. If there is no give, the avocado is not ripe yet and will not taste good. If there is a little give, the avocado is ripe. If there is a lot of give, the avocado may be past ripe and not good. In this case, taste test first before using.");
-        note.setRecipe(guacamole);
+        //note.setRecipe(guacamole);
         guacamole.setNotes(note);
 
         guacamole.getCategories().add(mexican);
@@ -70,16 +70,16 @@ public class DataLoader implements CommandLineRunner {
         Ingredient chili = new Ingredient("Chili powder", 2d, "Ancho", unitOfMeasureRepository.findByUnitOfMeasure("Tablespoon").get());
 
         Recipe tacos = new Recipe();
-        oregano.setRecipe(tacos);
-        chili.setRecipe(tacos);
-        tacos.getIngredients().add(oregano);
-        tacos.getIngredients().add(chili);
+        /*oregano.setRecipe(tacos);
+        chili.setRecipe(tacos);*/
+        tacos.addIngredient(oregano);
+        tacos.addIngredient(chili);
 
         Note note1 = new Note();
         note1.setNotes("The trick to making perfect guacamole is using ripe avocados that are just the right amount of ripeness. Not ripe enough and the avocado will be hard and tasteless. Too ripe and the taste will be off.\n" +
                 "\n" +
                 "Check for ripeness by gently pressing the outside of the avocado. If there is no give, the avocado is not ripe yet and will not taste good. If there is a little give, the avocado is ripe. If there is a lot of give, the avocado may be past ripe and not good. In this case, taste test first before using.");
-        note1.setRecipe(tacos);
+        //note1.setRecipe(tacos);
         tacos.setNotes(note1);
 
         tacos.getCategories().add(mexican);
