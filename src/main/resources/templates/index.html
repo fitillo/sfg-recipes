@@ -1,11 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Recipes</title>
 </head>
 <body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.sfgrecipe.model.Recipe"*/-->
     <h1>My Recipes! right :) hahahaha</h1>
 
+    <table id="recipes">
+        <thead>
+        <tr>
+            <td style="width: 150px">Description</td>
+            <td style="width: 150px">Prep Time</td>
+            <td style="width: 200px">Cook Time</td>
+            <td style="width: 150px">Servings</td>
+            <td style="width: 150px">Source</td>
+            <td style="width: 200px">URL</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="recipe : ${recipes}">
+            <td th:text="${recipe?.description}"></td>
+            <td th:text="${recipe?.prepTime}"></td>
+            <td th:text="${recipe?.cookTime}"></td>
+            <td th:text="${recipe?.servings}"></td>
+            <td th:text="${recipe?.source}"></td>
+            <td th:text="${recipe?.url}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

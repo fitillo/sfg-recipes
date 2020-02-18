@@ -9,14 +9,24 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Integer amount;
+    private Double amount;
     private String suggestion;
 
     @ManyToOne
     private Recipe recipe;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure uom;
+
+    public Ingredient() {
+    }
+
+    public Ingredient(String name, Double amount, String suggestion, UnitOfMeasure uom) {
+        this.name = name;
+        this.amount = amount;
+        this.suggestion = suggestion;
+        this.uom = uom;
+    }
 
     public Long getId() {
         return id;
@@ -34,11 +44,11 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
