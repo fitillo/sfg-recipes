@@ -4,11 +4,15 @@ import guru.springframework.sfgrecipe.model.*;
 import guru.springframework.sfgrecipe.repositories.CategoryRepository;
 import guru.springframework.sfgrecipe.repositories.RecipeRepository;
 import guru.springframework.sfgrecipe.repositories.UnitOfMeasureRepository;
-import org.springframework.boot.CommandLineRunner;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
-public class DataLoader implements CommandLineRunner {
+public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private UnitOfMeasureRepository unitOfMeasureRepository;
     private CategoryRepository categoryRepository;
@@ -21,11 +25,13 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    @Transactional
+    public void onApplicationEvent(ContextRefreshedEvent event) {
         loadData();
     }
 
     private void loadData() {
+        log.info("Loading bootstrap data on startup...");
         Ingredient avocados = new Ingredient("Avocado", 2d, "Ripe", unitOfMeasureRepository.findByUnitOfMeasure("Unit").get());
         Ingredient salt = new Ingredient("Salt", 0.25d, "More to taste", unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").get());
 
@@ -65,6 +71,7 @@ public class DataLoader implements CommandLineRunner {
                 "4 Serve: Serve immediately, or if making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.");
 
         recipeRepository.save(guacamole);
+        log.info("Guacamole recipe saved");
 
         Ingredient oregano = new Ingredient("Oregano", 1d, "Dried", unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").get());
         Ingredient chili = new Ingredient("Chili powder", 2d, "Ancho", unitOfMeasureRepository.findByUnitOfMeasure("Tablespoon").get());
@@ -105,5 +112,6 @@ public class DataLoader implements CommandLineRunner {
                 "5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.");
 
         recipeRepository.save(tacos);
+        log.info("tacos recipe saved properly");
     }
 }

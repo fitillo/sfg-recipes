@@ -1,7 +1,11 @@
 package guru.springframework.sfgrecipe.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 public class Ingredient {
 
@@ -13,6 +17,7 @@ public class Ingredient {
     private String suggestion;
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private Recipe recipe;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -25,54 +30,6 @@ public class Ingredient {
         this.name = name;
         this.amount = amount;
         this.suggestion = suggestion;
-        this.uom = uom;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getSuggestion() {
-        return suggestion;
-    }
-
-    public void setSuggestion(String suggestion) {
-        this.suggestion = suggestion;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    public UnitOfMeasure getUom() {
-        return uom;
-    }
-
-    public void setUom(UnitOfMeasure uom) {
         this.uom = uom;
     }
 }
