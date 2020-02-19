@@ -1,13 +1,17 @@
 package guru.springframework.sfgrecipe.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 public class Recipe {
 
@@ -35,19 +39,32 @@ public class Recipe {
     /*private Integer rating;*/
 
     @OneToOne(cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
     private Note notes;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "RECIPE_CATEGORY",
         joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    @EqualsAndHashCode.Exclude
     private Set<Category> categories = new HashSet<>();
+
+    @Builder
+    public Recipe(Long id, String description, Integer prepTime, Integer cookTime, Integer servings, String source,
+                  String url, String directions, Byte[] image, Difficulty difficulty, Note notes) {
+        this.id = id;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.servings = servings;
+        this.source = source;
+        this.url = url;
+        this.directions = directions;
+        this.image = image;
+        this.difficulty = difficulty;
+        this.notes = notes;
+    }
 
     public void setNotes(Note notes) {
         this.notes = notes;

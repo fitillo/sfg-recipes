@@ -1,12 +1,16 @@
 package guru.springframework.sfgrecipe.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Category {
 
@@ -17,6 +21,5 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    @EqualsAndHashCode.Exclude
-    private Set<Recipe> recipes;
+    private final Set<Recipe> recipes = new HashSet<>();
 }

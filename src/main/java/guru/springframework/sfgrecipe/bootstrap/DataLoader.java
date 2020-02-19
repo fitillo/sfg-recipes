@@ -32,34 +32,27 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private void loadData() {
         log.info("Loading bootstrap data on startup...");
-        Ingredient avocados = new Ingredient("Avocado", 2d, "Ripe", unitOfMeasureRepository.findByUnitOfMeasure("Unit").get());
-        Ingredient salt = new Ingredient("Salt", 0.25d, "More to taste", unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").get());
+        Ingredient avocados = Ingredient.builder().amount(2d).name("Avocado").suggestion("Ripe")
+                .uom(unitOfMeasureRepository.findByUnitOfMeasure("Unit").orElse(null)).build();
+        Ingredient salt = Ingredient.builder().name("Salt").amount(0.25d).suggestion("More to taste")
+                .uom(unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").orElse(null)).build();
 
         Category mexican = categoryRepository.findByName("Mexican").get();
         Category fastFood = categoryRepository.findByName("Fast Food").get();
-
-        Recipe guacamole = new Recipe();
-        /*avocados.setRecipe(guacamole);
-        salt.setRecipe(guacamole);*/
-        guacamole.addIngredient(avocados);
-        guacamole.addIngredient(salt);
 
         Note note = new Note();
         note.setNotes("The trick to making perfect guacamole is using ripe avocados that are just the right amount of ripeness. Not ripe enough and the avocado will be hard and tasteless. Too ripe and the taste will be off.\n" +
                 "\n" +
                 "Check for ripeness by gently pressing the outside of the avocado. If there is no give, the avocado is not ripe yet and will not taste good. If there is a little give, the avocado is ripe. If there is a lot of give, the avocado may be past ripe and not good. In this case, taste test first before using.");
-        //note.setRecipe(guacamole);
-        guacamole.setNotes(note);
 
+
+        Recipe guacamole = Recipe.builder().notes(note).difficulty(Difficulty.EASY).description("Guacamole")
+                .prepTime(10).cookTime(20).servings(5).source("Simply Recipes")
+                .url("https://www.simplyrecipes.com/recipes/perfect_guacamole/").build();
+        guacamole.addIngredient(avocados);
+        guacamole.addIngredient(salt);
         guacamole.getCategories().add(mexican);
         guacamole.getCategories().add(fastFood);
-        guacamole.setDifficulty(Difficulty.EASY);
-        guacamole.setDescription("Guacamole");
-        guacamole.setPrepTime(10);
-        guacamole.setCookTime(20);
-        guacamole.setServings(5);
-        guacamole.setSource("Simply Recipes");
-        guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacamole.setDirections("1 Cut the avocado, remove flesh: Cut the avocados in half. Remove the pit. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon. (See How to Cut and Peel an Avocado.) Place in a bowl.\n" +
                 "\n" +
                 "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)\n" +
@@ -73,31 +66,23 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         recipeRepository.save(guacamole);
         log.info("Guacamole recipe saved");
 
-        Ingredient oregano = new Ingredient("Oregano", 1d, "Dried", unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").get());
-        Ingredient chili = new Ingredient("Chili powder", 2d, "Ancho", unitOfMeasureRepository.findByUnitOfMeasure("Tablespoon").get());
-
-        Recipe tacos = new Recipe();
-        /*oregano.setRecipe(tacos);
-        chili.setRecipe(tacos);*/
-        tacos.addIngredient(oregano);
-        tacos.addIngredient(chili);
+        Ingredient oregano = Ingredient.builder().name("Oregano").amount(1d).suggestion("Dried")
+                .uom(unitOfMeasureRepository.findByUnitOfMeasure("Teaspoon").orElse(null)).build();
+        Ingredient chili = Ingredient.builder().name("Chili powder").amount(2d).suggestion("Ancho")
+                .uom(unitOfMeasureRepository.findByUnitOfMeasure("Tablespoon").orElse(null)).build();
 
         Note note1 = new Note();
         note1.setNotes("The trick to making perfect guacamole is using ripe avocados that are just the right amount of ripeness. Not ripe enough and the avocado will be hard and tasteless. Too ripe and the taste will be off.\n" +
                 "\n" +
                 "Check for ripeness by gently pressing the outside of the avocado. If there is no give, the avocado is not ripe yet and will not taste good. If there is a little give, the avocado is ripe. If there is a lot of give, the avocado may be past ripe and not good. In this case, taste test first before using.");
-        //note1.setRecipe(tacos);
-        tacos.setNotes(note1);
 
+        Recipe tacos = Recipe.builder().notes(note1).difficulty(Difficulty.MODERATE).description("Tacos")
+                .prepTime(30).cookTime(40).servings(3).source("Simply Recipes")
+                .url("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/").build();
+        tacos.addIngredient(oregano);
+        tacos.addIngredient(chili);
         tacos.getCategories().add(mexican);
         tacos.getCategories().add(fastFood);
-        tacos.setDifficulty(Difficulty.MODERATE);
-        tacos.setDescription("Tacos");
-        tacos.setPrepTime(30);
-        tacos.setCookTime(40);
-        tacos.setServings(3);
-        tacos.setSource("Simply Recipes");
-        tacos.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
         tacos.setDirections("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
                 "\n" +
                 "2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\n" +

@@ -1,11 +1,14 @@
 package guru.springframework.sfgrecipe.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Note {
 
@@ -14,7 +17,6 @@ public class Note {
     private Long id;
 
     @OneToOne
-    @EqualsAndHashCode.Exclude
     private Recipe recipe;
 
     @Lob
