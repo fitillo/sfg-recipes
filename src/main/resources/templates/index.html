@@ -2,15 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
     <title>Recipes</title>
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="guru.springframework.sfgrecipe.model.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -24,42 +29,43 @@
                         <table class="table table-hover ">
                             <thead class="thead-inverse">
                                 <tr>
-                                    <td>ID</td>
-                                    <td>Description</td>
-                                    <td>Prep Time</td>
-                                    <td>Cook Time</td>
-                                    <td>Servings</td>
-                                    <td>Source</td>
-                                    <td>URL</td>
+                                    <th>ID</th>
+                                    <th>Description</th>
+                                    <th>Prep Time</th>
+                                    <th>Cook Time</th>
+                                    <th>Servings</th>
+                                    <th>Source</th>
+                                    <th>View</th>
                                 </tr>
                             </thead>
                             <tbody>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">123</td>
-                                <td th:text="${recipe.description}">Tasty Goodnees 1</td>
-                                <td th:text="${recipe?.prepTime}">10</td>
-                                <td th:text="${recipe?.cookTime}">10</td>
-                                <td th:text="${recipe?.servings}">1</td>
-                                <td th:text="${recipe?.source}">1</td>
-                                <td th:text="${recipe?.url}">url1</td>
+                                <td>123</td>
+                                <td>Tasty Goodnees 1</td>
+                                <td>10</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">12333</td>
-                                <td th:text="${recipe.description}">Tasty Goodnees 2</td>
-                                <td th:text="${recipe?.prepTime}">20</td>
-                                <td th:text="${recipe?.cookTime}">20</td>
-                                <td th:text="${recipe?.servings}">2</td>
-                                <td th:text="${recipe?.source}">2</td>
-                                <td th:text="${recipe?.url}">url2</td>
+                                <td>12333</td>
+                                <td>Tasty Goodnees 2</td>
+                                <td>20</td>
+                                <td>20</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.sfgrecipe.model.Recipe"*/-->
                                 <td th:text="${recipe?.id}"></td>
                                 <td th:text="${recipe?.description}"></td>
                                 <td th:text="${recipe?.prepTime}"></td>
                                 <td th:text="${recipe?.cookTime}"></td>
                                 <td th:text="${recipe?.servings}"></td>
                                 <td th:text="${recipe?.source}"></td>
-                                <td th:text="${recipe?.url}"></td>
+                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">View</a></td>
                             </tr>
                             </tbody>
                         </table>
