@@ -31,7 +31,11 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
 
-    compile 'org.webjars:bootstrap:3.3.7-1'
+    implementation 'org.webjars:bootstrap:3.3.7-1'
+
+    //Fix warning: unknown enum constant When.MAYBE
+    //  reason: class file for javax.annotation.meta.When not found
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

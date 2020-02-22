@@ -58,7 +58,7 @@
                                 <td><a href="#">View</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
-                                <!--/*@thymesVar id="recipe" type="guru.springframework.sfgrecipe.model.Recipe"*/-->
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                                 <td th:text="${recipe?.id}"></td>
                                 <td th:text="${recipe?.description}"></td>
                                 <td th:text="${recipe?.prepTime}"></td>
