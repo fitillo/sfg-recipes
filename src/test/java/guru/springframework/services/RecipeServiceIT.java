@@ -34,7 +34,7 @@ public class RecipeServiceIT {
         command.setDescription(DESCRIPTION);
         RecipeCommand savedRecipeCommand = service.saveRecipeCommand(command);
 
-        assertEquals(service.findById(command.getId()).get().getDescription(), DESCRIPTION);
-        assertEquals(service.findById(savedRecipeCommand.getId()).get().getDescription(), DESCRIPTION);
+        assertEquals(service.findById(command.getId()).getDescription(), DESCRIPTION);
+        assertEquals(service.findById(savedRecipeCommand.getId()).getDescription(), DESCRIPTION);
     }
 }

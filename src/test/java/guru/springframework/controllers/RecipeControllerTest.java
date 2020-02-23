@@ -12,11 +12,10 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,6 +38,8 @@ class RecipeControllerTest {
     @Mock
     private Model model;
 
+    MockMvc mockMvc;
+
     @Captor
     private ArgumentCaptor<Recipe> captor;
 
@@ -47,11 +48,12 @@ class RecipeControllerTest {
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getRecipeById() {
-        when(service.findById(ID)).thenReturn(Optional.of(guacamole));
+        when(service.findById(ID)).thenReturn(guacamole);
 
         assertEquals("recipe/show", controller.showById(ID.toString(), model));
         verify(service, times(1)).findById(anyLong());
@@ -60,18 +62,18 @@ class RecipeControllerTest {
     }
 
     @Test
+    @Disabled
     void noRecipeById() {
-        when(service.findById(ID)).thenReturn(Optional.empty());
+        //when(service.findById(ID)).thenReturn(new RuntimeException());
 
         assertThrows(RuntimeException.class, () -> controller.showById(ID.toString(), model));
     }
 
     @Test
     void testMockMVC() throws Exception {
-        when(service.findById(ID)).thenReturn(Optional.of(guacamole));
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        when(service.findById(ID)).thenReturn(guacamole);
 
-        mockMvc.perform(get("/recipe/show/1"))
+        mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
@@ -79,8 +81,6 @@ class RecipeControllerTest {
 
     @Test
     void testNewRecipeMockMVC() throws Exception {
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
@@ -88,15 +88,37 @@ class RecipeControllerTest {
     }
 
     @Test
-    @Disabled
     void testNewRecipeAddedMockMVC() throws Exception {
-        RecipeCommand detached = RecipeCommand.builder().description(PAELLA).build();
         RecipeCommand saved = RecipeCommand.builder().id(ID).description(PAELLA).build();
         when(service.saveRecipeCommand(any())).thenReturn(saved);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        mockMvc.perform(post("/recipe/"))
+        mockMvc.perform(post("/recipe/")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "")
+                .param("description", "some string")
+        )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/"+ID+"/show/"));
+    }
+
+    @Test
+    void testUpdateRecipe() throws Exception {
+        RecipeCommand updated = RecipeCommand.builder().id(ID).description(PAELLA).build();
+        when(service.findCommandById(ID)).thenReturn(updated);
+
+        mockMvc.perform(get("/recipe/"+ID+"/update"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("redirect:/recipe/show/"+ID));
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    void testUpdateNotExistentRecipe() throws Exception {
+        RecipeCommand updated = RecipeCommand.builder().id(ID).description(PAELLA).build();
+        when(service.findCommandById(ID)).thenReturn(null);
+
+        mockMvc.perform(get("/recipe/"+ID+"/update"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/error"));
     }
 }
