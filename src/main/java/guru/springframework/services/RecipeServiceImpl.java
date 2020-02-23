@@ -65,4 +65,12 @@ public class RecipeServiceImpl implements RecipeService {
             return null;
         }
     }
+
+    @Override
+    public void deleteById(Long id) {
+        if (log.isDebugEnabled()) {
+            log.debug("Deleting RecipeId: " + id);
+        }
+        repository.deleteById(id);
+    }
 }

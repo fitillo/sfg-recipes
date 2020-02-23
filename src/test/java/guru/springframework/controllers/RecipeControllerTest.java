@@ -98,7 +98,7 @@ class RecipeControllerTest {
                 .param("description", "some string")
         )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/recipe/"+ID+"/show/"));
+                .andExpect(view().name("redirect:/recipe/"+ID+"/show"));
     }
 
     @Test
@@ -114,11 +114,19 @@ class RecipeControllerTest {
 
     @Test
     void testUpdateNotExistentRecipe() throws Exception {
-        RecipeCommand updated = RecipeCommand.builder().id(ID).description(PAELLA).build();
         when(service.findCommandById(ID)).thenReturn(null);
 
         mockMvc.perform(get("/recipe/"+ID+"/update"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/error"));
+    }
+
+    @Test
+    void testDeleteRecipe() throws Exception {
+        mockMvc.perform(get("/recipe/"+ID+"/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        verify(service, times(1)).deleteById(anyLong());
     }
 }
