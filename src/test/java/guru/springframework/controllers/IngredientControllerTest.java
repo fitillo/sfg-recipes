@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
+import guru.springframework.domain.Recipe;
 import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
@@ -112,5 +113,25 @@ class IngredientControllerTest {
             )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/"+ID+"/ingredient/"+ID+"/show"));
+    }
+
+    @Test
+    void testAddNewIngredient() throws Exception{
+        //given
+        IngredientCommand command = IngredientCommand.builder().id(ID).recipeId(ID).build();
+
+        //when
+        when(recipeService.findById(anyLong())).thenReturn(Recipe.builder().build());
+        when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
+
+        //then
+        mockMvc.perform(get("/recipe/1/ingredient/new"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("uomList"))
+                .andExpect(view().name("recipe/ingredient/ingredientform"));
+
+        verify(recipeService).findById(anyLong());
+        verify(unitOfMeasureService).listAllUoms();
     }
 }

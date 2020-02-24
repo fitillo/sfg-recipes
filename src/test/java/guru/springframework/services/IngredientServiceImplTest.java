@@ -96,7 +96,8 @@ class IngredientServiceImplTest {
     @Test
     void testSaveNewIngredientCommand() {
         //given
-        IngredientCommand command = IngredientCommand.builder().description(AVOCADO).amount(AMOUNT).recipeId(ID).build();
+        IngredientCommand command = IngredientCommand.builder().description(AVOCADO)
+                .amount(AMOUNT).recipeId(ID).uom(UnitOfMeasureCommand.builder().id(ID).build()).build();
 
         Optional<Recipe> recipeOptional = Optional.of(Recipe.builder().id(ID).description(MY_RECIPE).build());
         Recipe savedRecipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
