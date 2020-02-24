@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -146,5 +147,28 @@ class IngredientServiceImplTest {
         assertEquals(ID, savedIngredientCommand.getId());
         assertEquals(AVOCADO, savedIngredientCommand.getDescription());
         assertEquals(new BigDecimal(1), savedIngredientCommand.getAmount());
+    }
+
+    @Test
+    void testDeleteByRecipeIdIngredientId() {
+        //given
+        Recipe previousRecipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
+        Ingredient ingredientToDelete = Ingredient.builder().id(ID).recipe(previousRecipe).build();
+        previousRecipe.addIngredient(ingredientToDelete);
+
+        Optional<Recipe> recipeOptional = Optional.of(previousRecipe);
+        //Recipe savedRecipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        //when(recipeRepository.save(any())).thenReturn(savedRecipe);
+
+        //when
+        service.deleteByRecipeIdIngredientId(ID, ingredientToDelete.getId());
+
+        //then
+        assertEquals(0, recipeOptional.get().getIngredients().size());
+
+        verify(recipeRepository).findById(anyLong());
+        verify(recipeRepository).save(any());
     }
 }
