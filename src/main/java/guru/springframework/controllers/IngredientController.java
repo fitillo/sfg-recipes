@@ -13,21 +13,24 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class IngredientController {
 
-    private final RecipeService recipeService;
     private final IngredientService ingredientService;
-    private final UnitOfMeasureService uomService;
+    private final RecipeService recipeService;
+    private final UnitOfMeasureService unitOfMeasureService;
 
-    public IngredientController(RecipeService recipeService, IngredientService ingredientService, UnitOfMeasureService uomService) {
-        this.recipeService = recipeService;
+    public IngredientController(IngredientService ingredientService, RecipeService recipeService, UnitOfMeasureService unitOfMeasureService) {
         this.ingredientService = ingredientService;
-        this.uomService = uomService;
+        this.recipeService = recipeService;
+        this.unitOfMeasureService = unitOfMeasureService;
     }
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredients")
-    public String listIngredients(@PathVariable String recipeId, Model model) {
+    public String listIngredients(@PathVariable String recipeId, Model model){
         log.debug("Getting ingredient list for recipe id: " + recipeId);
+
+        // use command object to avoid lazy load errors in Thymeleaf.
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
+
         return "recipe/ingredient/list";
     }
 
@@ -45,7 +48,7 @@ public class IngredientController {
     public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient",
                 ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
-        model.addAttribute("uomList", uomService.listAllUoms());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
     }
 

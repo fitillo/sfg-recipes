@@ -30,11 +30,11 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
 
     @Test
     void convert() {
-        UnitOfMeasureCommand command = UnitOfMeasureCommand.builder().id(ID).unitOfMeasure(CUP).build();
+        UnitOfMeasureCommand command = UnitOfMeasureCommand.builder().id(ID).description(CUP).build();
         UnitOfMeasure uom = converter.convert(command);
 
         assertNotNull(uom);
         assertEquals(ID, uom.getId());
-        assertEquals(CUP, uom.getUnitOfMeasure());
+        assertEquals(CUP, uom.getDescription());
     }
 }

@@ -1,19 +1,19 @@
 package guru.springframework.converters;
 
-import guru.springframework.commands.NoteCommand;
-import guru.springframework.domain.Note;
+import guru.springframework.commands.NotesCommand;
+import guru.springframework.domain.Notes;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoteCommandToNote implements Converter<NoteCommand, Note> {
+public class NotesCommandToNotes implements Converter<NotesCommand, Notes> {
     @Synchronized
     @Nullable
     @Override
-    public Note convert(NoteCommand source) {
+    public Notes convert(NotesCommand source) {
         return (source == null) ? null :
-                Note.builder().id(source.getId()).notes(source.getNotes()).build();
+                Notes.builder().id(source.getId()).recipeNotes(source.getRecipeNotes()).build();
     }
 }

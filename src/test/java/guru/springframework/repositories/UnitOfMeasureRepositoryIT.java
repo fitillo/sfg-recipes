@@ -27,17 +27,17 @@ class UnitOfMeasureRepositoryIT {
     @Test
     //@DirtiesContext This would make spring to refresh the whole context
     void findByUnitOfMeasure() {
-        Optional<UnitOfMeasure> uomOptional = repository.findByUnitOfMeasure("Teaspoon");
+        Optional<UnitOfMeasure> uomOptional = repository.findByDescription("Teaspoon");
 
         assertTrue(uomOptional.isPresent());
-        assertEquals(uomOptional.get().getUnitOfMeasure(), "Teaspoon");
+        assertEquals(uomOptional.get().getDescription(), "Teaspoon");
     }
 
     @Test
     void findByUnitOfMeasureCup() {
-        Optional<UnitOfMeasure> uomOptional = repository.findByUnitOfMeasure("Cup");
+        Optional<UnitOfMeasure> uomOptional = repository.findByDescription("Cup");
 
         assertTrue(uomOptional.isPresent());
-        assertEquals(uomOptional.get().getUnitOfMeasure(), "Cup");
+        assertEquals(uomOptional.get().getDescription(), "Cup");
     }
 }

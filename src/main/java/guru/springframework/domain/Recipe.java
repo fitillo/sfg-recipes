@@ -42,7 +42,7 @@ public class Recipe {
     /*private Integer rating;*/
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Note notes;
+    private Notes notes;
 
     @ManyToMany
     @JoinTable(name = "RECIPE_CATEGORY",
@@ -52,7 +52,7 @@ public class Recipe {
 
     @Builder
     public Recipe(Long id, String description, Integer prepTime, Integer cookTime, Integer servings, String source,
-                  String url, String directions, Byte[] image, Difficulty difficulty, Note notes) {
+                  String url, String directions, Byte[] image, Difficulty difficulty, Notes notes) {
         this.id = id;
         this.description = description;
         this.prepTime = prepTime;
@@ -66,7 +66,7 @@ public class Recipe {
         this.notes = notes;
     }
 
-    public void setNotes(Note notes) {
+    public void setNotes(Notes notes) {
         if (notes != null) {
             this.notes = notes;
             notes.setRecipe(this);

@@ -79,8 +79,7 @@ public class IngredientServiceImpl implements IngredientService {
             } else {
                 Ingredient ingredient = ingredientOptional.get();
                 ingredient.setAmount(command.getAmount());
-                ingredient.setName(command.getName());
-                ingredient.setSuggestion(command.getSuggestion());
+                ingredient.setDescription(command.getDescription());
                 ingredient.setUom(unitOfMeasureRepository.findById(command.getUom().getId())
                     .orElseThrow(() -> new RuntimeException("UOM NOT FOUND"))); //todo error handling
             }

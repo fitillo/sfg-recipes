@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Note {
+public class Notes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,6 @@ public class Note {
     private Recipe recipe;
 
     @Lob
-    private String notes;
+    private String recipeNotes;
+
 }

@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IngredientToIngredientCommandTest {
 
     public static final Recipe RECIPE = new Recipe();
-    public static final Double AMOUNT = 1D;
+    public static final BigDecimal AMOUNT = new BigDecimal(1);
     public static final String NAME = "Cheeseburger";
     public static final Long ID_VALUE = 1L;
     public static final Long UOM_ID = 2L;
@@ -40,7 +42,7 @@ public class IngredientToIngredientCommandTest {
     public void convert() throws Exception {
         //given
         UnitOfMeasure uom = UnitOfMeasure.builder().id(UOM_ID).build();
-        Ingredient ingredient = Ingredient.builder().id(ID_VALUE).amount(AMOUNT).name(NAME).uom(uom).build();
+        Ingredient ingredient = Ingredient.builder().id(ID_VALUE).amount(AMOUNT).description(NAME).uom(uom).build();
 
         //when
         IngredientCommand ingredientCommand = converter.convert(ingredient);
@@ -50,7 +52,7 @@ public class IngredientToIngredientCommandTest {
         assertNotNull(ingredientCommand.getUom());
         assertEquals(ID_VALUE, ingredientCommand.getId());
         assertEquals(AMOUNT, ingredientCommand.getAmount());
-        assertEquals(NAME, ingredientCommand.getName());
+        assertEquals(NAME, ingredientCommand.getDescription());
         assertEquals(UOM_ID, ingredientCommand.getUom().getId());
     }
 
@@ -60,7 +62,7 @@ public class IngredientToIngredientCommandTest {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(ID_VALUE);
         ingredient.setAmount(AMOUNT);
-        ingredient.setName(NAME);
+        ingredient.setDescription(NAME);
 
         //when
         IngredientCommand ingredientCommand = converter.convert(ingredient);
@@ -70,6 +72,6 @@ public class IngredientToIngredientCommandTest {
         assertNull(ingredientCommand.getUom());
         assertEquals(ID_VALUE, ingredientCommand.getId());
         assertEquals(AMOUNT, ingredientCommand.getAmount());
-        assertEquals(NAME, ingredientCommand.getName());
+        assertEquals(NAME, ingredientCommand.getDescription());
     }
 }

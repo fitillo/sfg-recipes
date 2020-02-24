@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 class IngredientServiceImplTest {
 
     public static final long ID = 1L;
+    public static final BigDecimal AMOUNT = new BigDecimal(1);
     public static final String AVOCADO = "avocado";
     public static final String MY_RECIPE = "My recipe";
 
@@ -59,7 +61,7 @@ class IngredientServiceImplTest {
     void findByRecipeIdAndIngredientId() {
         //given
         Recipe recipe = Recipe.builder().id(ID).build();
-        Ingredient ingredient = Ingredient.builder().id(ID).name(AVOCADO).recipe(recipe).build();
+        Ingredient ingredient = Ingredient.builder().id(ID).description(AVOCADO).recipe(recipe).build();
         recipe.addIngredient(ingredient);
 
         //when
@@ -69,7 +71,7 @@ class IngredientServiceImplTest {
         IngredientCommand command = service.findByRecipeIdAndIngredientId(recipe.getId(), ingredient.getId());
 
         assertEquals(ingredient.getId(), command.getId());
-        assertEquals(ingredient.getName(), command.getName());
+        assertEquals(ingredient.getDescription(), command.getDescription());
         assertEquals(ID, command.getRecipeId());
     }
 
@@ -94,7 +96,7 @@ class IngredientServiceImplTest {
     @Test
     void testSaveNewIngredientCommand() {
         //given
-        IngredientCommand command = IngredientCommand.builder().name(AVOCADO).amount(1D).recipeId(ID).build();
+        IngredientCommand command = IngredientCommand.builder().description(AVOCADO).amount(AMOUNT).recipeId(ID).build();
 
         Optional<Recipe> recipeOptional = Optional.of(Recipe.builder().id(ID).description(MY_RECIPE).build());
         Recipe savedRecipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
@@ -111,21 +113,21 @@ class IngredientServiceImplTest {
         //then
         assertEquals(1, savedRecipe.getIngredients().size());
         assertEquals(ID, savedIngredientCommand.getId());
-        assertEquals(AVOCADO, savedIngredientCommand.getName());
+        assertEquals(AVOCADO, savedIngredientCommand.getDescription());
     }
 
     @Test
     void testSaveExistingIngredientCommand() {
         //given
         UnitOfMeasureCommand uomCommand = UnitOfMeasureCommand.builder().id(ID).build();
-        IngredientCommand command = IngredientCommand.builder().id(ID).name(AVOCADO)
-                .uom(uomCommand).amount(1D).recipeId(ID).build();
+        IngredientCommand command = IngredientCommand.builder().id(ID).description(AVOCADO)
+                .uom(uomCommand).amount(new BigDecimal(1)).recipeId(ID).build();
 
 
         Recipe recipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
         UnitOfMeasure uom = UnitOfMeasure.builder().id(ID).build();
         Optional<UnitOfMeasure> optionalUOM = Optional.of(uom);
-        recipe.addIngredient(Ingredient.builder().id(ID).name("Other name").amount(100D).uom(uom).build());
+        recipe.addIngredient(Ingredient.builder().id(ID).description("Other name").amount(new BigDecimal(100)).uom(uom).build());
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
         Recipe savedRecipe = Recipe.builder().id(ID).description(MY_RECIPE).build();
@@ -141,7 +143,7 @@ class IngredientServiceImplTest {
         //then
         assertEquals(1, savedRecipe.getIngredients().size());
         assertEquals(ID, savedIngredientCommand.getId());
-        assertEquals(AVOCADO, savedIngredientCommand.getName());
-        assertEquals(1D, savedIngredientCommand.getAmount());
+        assertEquals(AVOCADO, savedIngredientCommand.getDescription());
+        assertEquals(new BigDecimal(1), savedIngredientCommand.getAmount());
     }
 }

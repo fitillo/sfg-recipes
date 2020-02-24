@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NoteCommand {
-
+public class NotesCommand {
     private Long id;
-    private String notes;
+    private String recipeNotes;
+
 }

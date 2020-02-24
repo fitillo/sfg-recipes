@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IngredientCommandToIngredientTest {
 
     public static final Recipe RECIPE = new Recipe();
-    public static final Double AMOUNT = 1D;
+    public static final BigDecimal AMOUNT = new BigDecimal(1);
     public static final String NAME = "Cheeseburger";
     public static final Long ID_VALUE = 1L;
     public static final Long UOM_ID = 2L;
@@ -42,7 +44,7 @@ public class IngredientCommandToIngredientTest {
         IngredientCommand command = new IngredientCommand();
         command.setId(ID_VALUE);
         command.setAmount(AMOUNT);
-        command.setName(NAME);
+        command.setDescription(NAME);
         UnitOfMeasureCommand unitOfMeasureCommand = new UnitOfMeasureCommand();
         unitOfMeasureCommand.setId(UOM_ID);
         command.setUom(unitOfMeasureCommand);
@@ -55,7 +57,7 @@ public class IngredientCommandToIngredientTest {
         assertNotNull(ingredient.getUom());
         assertEquals(ID_VALUE, ingredient.getId());
         assertEquals(AMOUNT, ingredient.getAmount());
-        assertEquals(NAME, ingredient.getName());
+        assertEquals(NAME, ingredient.getDescription());
         assertEquals(UOM_ID, ingredient.getUom().getId());
     }
 
@@ -65,7 +67,7 @@ public class IngredientCommandToIngredientTest {
         IngredientCommand command = new IngredientCommand();
         command.setId(ID_VALUE);
         command.setAmount(AMOUNT);
-        command.setName(NAME);
+        command.setDescription(NAME);
         UnitOfMeasureCommand unitOfMeasureCommand = new UnitOfMeasureCommand();
 
 
@@ -77,7 +79,7 @@ public class IngredientCommandToIngredientTest {
         assertNull(ingredient.getUom());
         assertEquals(ID_VALUE, ingredient.getId());
         assertEquals(AMOUNT, ingredient.getAmount());
-        assertEquals(NAME, ingredient.getName());
+        assertEquals(NAME, ingredient.getDescription());
 
     }
 }

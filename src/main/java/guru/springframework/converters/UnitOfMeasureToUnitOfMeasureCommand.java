@@ -14,6 +14,6 @@ public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeas
     @Override
     public UnitOfMeasureCommand convert(UnitOfMeasure source) {
         return (source == null) ? null :
-                UnitOfMeasureCommand.builder().id(source.getId()).unitOfMeasure(source.getUnitOfMeasure()).build();
+                UnitOfMeasureCommand.builder().id(source.getId()).description(source.getDescription()).build();
     }
 }

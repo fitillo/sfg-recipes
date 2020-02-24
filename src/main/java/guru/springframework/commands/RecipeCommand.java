@@ -13,7 +13,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class RecipeCommand {
-
     private Long id;
     private String description;
     private Integer prepTime;
@@ -22,13 +21,13 @@ public class RecipeCommand {
     private String source;
     private String url;
     private String directions;
-    private Difficulty difficulty;
-    private NoteCommand notes;
     private Set<IngredientCommand> ingredients = new HashSet<>();
+    private Difficulty difficulty;
+    private NotesCommand notes;
     private Set<CategoryCommand> categories = new HashSet<>();
 
     @Builder
-    public RecipeCommand(Long id, String description, Integer prepTime, Integer cookTime, Integer servings, String source, String url, String directions, Difficulty difficulty, NoteCommand notes) {
+    public RecipeCommand(Long id, String description, Integer prepTime, Integer cookTime, Integer servings, String source, String url, String directions, Difficulty difficulty, NotesCommand notes) {
         this.id = id;
         this.description = description;
         this.prepTime = prepTime;

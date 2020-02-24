@@ -31,11 +31,11 @@ class CategoryToCategoryCommandTest {
 
     @Test
     void convert() {
-        Category category = Category.builder().id(ID).name(NAME).build();
+        Category category = Category.builder().id(ID).description(NAME).build();
         CategoryCommand command = converter.convert(category);
 
         assertNotNull(command);
         assertEquals(ID, command.getId());
-        assertEquals(NAME, command.getName());
+        assertEquals(NAME, command.getDescription());
     }
 }

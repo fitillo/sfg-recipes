@@ -31,12 +31,12 @@ class CategoryCommandToCategoryTest {
 
     @Test
     void convert() {
-        CategoryCommand command = CategoryCommand.builder().id(ID).name(NAME).build();
+        CategoryCommand command = CategoryCommand.builder().id(ID).description(NAME).build();
         Category category = converter.convert(command);
 
         assertNotNull(category);
         assertEquals(ID, category.getId());
-        assertEquals(NAME, category.getName());
+        assertEquals(NAME, category.getDescription());
         assertNotNull(category.getRecipes());
     }
 }

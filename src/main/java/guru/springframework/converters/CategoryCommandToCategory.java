@@ -14,6 +14,6 @@ public class CategoryCommandToCategory implements Converter<CategoryCommand, Cat
     @Override
     public Category convert(CategoryCommand source) {
         return (source == null) ? null :
-                Category.builder().id(source.getId()).name(source.getName()).build();
+                Category.builder().id(source.getId()).description(source.getDescription()).build();
     }
 }

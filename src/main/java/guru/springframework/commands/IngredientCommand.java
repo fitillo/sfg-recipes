@@ -2,6 +2,8 @@ package guru.springframework.commands;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,8 +13,7 @@ public class IngredientCommand {
 
     private Long id;
     private Long recipeId;
-    private String name;
-    private Double amount;
-    private String suggestion;
+    private String description;
+    private BigDecimal amount;
     private UnitOfMeasureCommand uom;
 }

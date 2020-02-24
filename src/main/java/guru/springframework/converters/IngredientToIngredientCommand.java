@@ -23,9 +23,8 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
             return null;
         }
 
-        IngredientCommand command = IngredientCommand.builder().id(source.getId()).name(source.getName())
-                .amount(source.getAmount()).suggestion(source.getSuggestion())
-                .uom(uomConverter.convert(source.getUom())).build();
+        IngredientCommand command = IngredientCommand.builder().id(source.getId()).description(source.getDescription())
+                .amount(source.getAmount()).uom(uomConverter.convert(source.getUom())).build();
 
         if (source.getRecipe() != null) {
             command.setRecipeId(source.getRecipe().getId());

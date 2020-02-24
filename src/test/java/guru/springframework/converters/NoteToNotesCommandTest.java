@@ -1,21 +1,21 @@
 package guru.springframework.converters;
 
-import guru.springframework.commands.NoteCommand;
-import guru.springframework.domain.Note;
+import guru.springframework.commands.NotesCommand;
+import guru.springframework.domain.Notes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NoteToNoteCommandTest {
+class NoteToNotesCommandTest {
 
     public static final long ID = 1L;
     public static final String NOTE = "note";
-    private NoteToNoteCommand converter;
+    private NotesToNotesCommand converter;
 
     @BeforeEach
     void setUp() {
-        converter = new NoteToNoteCommand();
+        converter = new NotesToNotesCommand();
     }
 
     @Test
@@ -25,14 +25,14 @@ class NoteToNoteCommandTest {
 
     @Test
     void testEmpty() {
-        assertNotNull(converter.convert(Note.builder().build()));
+        assertNotNull(converter.convert(Notes.builder().build()));
     }
 
     @Test
     void convert() {
-        NoteCommand note = converter.convert(Note.builder().id(ID).notes(NOTE).build());
+        NotesCommand note = converter.convert(Notes.builder().id(ID).recipeNotes(NOTE).build());
         assertNotNull(note);
         assertEquals(note.getId(), ID);
-        assertEquals(note.getNotes(), NOTE);
+        assertEquals(note.getRecipeNotes(), NOTE);
     }
 }

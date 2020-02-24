@@ -31,48 +31,31 @@
                     <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
                         <table class="table table-hover ">
                             <thead class="thead-inverse">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Description</th>
-                                    <th>Prep Time</th>
-                                    <th>Cook Time</th>
-                                    <th>Servings</th>
-                                    <th>Source</th>
-                                    <th>View</th>
-                                </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
                             </thead>
-                            <tbody>
                             <tr th:remove="all">
                                 <td>123</td>
                                 <td>Tasty Goodnees 1</td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>1</td>
                                 <td><a href="#">View</a></td>
                             </tr>
                             <tr th:remove="all">
                                 <td>12333</td>
                                 <td>Tasty Goodnees 2</td>
-                                <td>20</td>
-                                <td>20</td>
-                                <td>2</td>
-                                <td>2</td>
                                 <td><a href="#">View</a></td>
                             </tr>
-                            <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                             <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe?.id}"></td>
-                                <td th:text="${recipe?.description}"></td>
-                                <td th:text="${recipe?.prepTime}"></td>
-                                <td th:text="${recipe?.cookTime}"></td>
-                                <td th:text="${recipe?.servings}"></td>
-                                <td th:text="${recipe?.source}"></td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show/' }">View</a></td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update/' }">Update</a></td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete/' }">Delete</a></td>
+                                <td th:text="${recipe.id}">334</td>
+                                <td th:text="${recipe.description}">Tasty Goodnees 3</td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">Delete</a></td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -80,5 +63,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

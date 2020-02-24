@@ -5,7 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface CategoryRepository extends CrudRepository<Category, String> {
+/**
+ * Created by jt on 6/13/17.
+ */
+public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-    Optional<Category> findByName(String name);
+    Optional<Category> findByDescription(String description);
 }

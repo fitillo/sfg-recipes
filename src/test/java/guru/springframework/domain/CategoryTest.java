@@ -12,7 +12,7 @@ class CategoryTest {
 
     @BeforeEach
     public void setUp() {
-        category = Category.builder().id(1L).name("Mexican").build();
+        category = Category.builder().id(1L).description("Mexican").build();
     }
 
     @Test
@@ -22,7 +22,7 @@ class CategoryTest {
 
     @Test
     void getName() {
-        assertEquals("Mexican", category.getName());
+        assertEquals("Mexican", category.getDescription());
     }
 
     @Test

@@ -6,6 +6,7 @@ import guru.springframework.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +20,7 @@ class RecipeToRecipeCommandTest {
     public static final String DESCRIPTION = "description";
     public static final int PREP_TIME = 10;
     public static final Difficulty EASY = Difficulty.EASY;
-    public static final double AMOUNT = 2D;
+    public static final BigDecimal AMOUNT = new BigDecimal(2);
     private static final int COOK_TIME = 10;
     public static final int SERVINGS = 5;
     public static final String SOURCE = "source";
@@ -31,7 +32,7 @@ class RecipeToRecipeCommandTest {
 
     @BeforeEach
     void setUp() {
-        converter = new RecipeToRecipeCommand(new NoteToNoteCommand(),
+        converter = new RecipeToRecipeCommand(new NotesToNotesCommand(),
                 new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand()),
                 new CategoryToCategoryCommand());
     }
@@ -50,15 +51,15 @@ class RecipeToRecipeCommandTest {
     void convert() {
         Recipe originRecipe = Recipe.builder().id(ID).description(DESCRIPTION).prepTime(PREP_TIME)
                 .cookTime(COOK_TIME).servings(SERVINGS).source(SOURCE).url(URL).directions(DIRECTIONS).difficulty(EASY)
-                .notes(Note.builder().id(ID).notes(DESCRIPTION).build()).build();
+                .notes(Notes.builder().id(ID).recipeNotes(DESCRIPTION).build()).build();
 
         Set<Ingredient> ingredients = new HashSet<>();
         ingredients.add(Ingredient.builder().id(ID).amount(AMOUNT).build());
         ingredients.add(Ingredient.builder().id(ID+1).amount(AMOUNT).build());
 
         Set<Category> categories = new HashSet<>();
-        categories.add(Category.builder().id(ID).name(MEXICAN).build());
-        categories.add(Category.builder().id(ID+1).name(ITALIAN).build());
+        categories.add(Category.builder().id(ID).description(MEXICAN).build());
+        categories.add(Category.builder().id(ID+1).description(ITALIAN).build());
 
         originRecipe.setCategories(categories);
         originRecipe.setIngredients(ingredients);
@@ -75,12 +76,12 @@ class RecipeToRecipeCommandTest {
         assertEquals(DIRECTIONS, command.getDirections());
         assertEquals(EASY, command.getDifficulty());
         assertEquals(ID, command.getNotes().getId());
-        assertEquals(DESCRIPTION, command.getNotes().getNotes());
+        assertEquals(DESCRIPTION, command.getNotes().getRecipeNotes());
         assertEquals(2, command.getIngredients().size());
         assertEquals(2, command.getCategories().size());
         assertEquals(2, command.getIngredients().stream()
                 .filter(ingredient -> ingredient.getAmount() == AMOUNT).count());
-        List<String> categoryStrings = command.getCategories().stream().map(CategoryCommand::getName)
+        List<String> categoryStrings = command.getCategories().stream().map(CategoryCommand::getDescription)
                 .collect(Collectors.toList());
         assertTrue(categoryStrings.contains(MEXICAN));
         assertTrue(categoryStrings.contains(ITALIAN));

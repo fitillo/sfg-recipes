@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/recipe/")
 public class RecipeController {
 
-    private final RecipeService service;
+    private final RecipeService recipeService;
 
-    public RecipeController(RecipeService service) {
-        this.service = service;
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @GetMapping
@@ -25,7 +25,7 @@ public class RecipeController {
             log.debug("Request for recipe by id. Controller executing....");
         }
 
-        model.addAttribute("recipe", service.findById(Long.valueOf(id)));
+        model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
         return "recipe/show";
     }
 
@@ -40,7 +40,7 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("{id}/update")
     public String updateRecipe(@PathVariable String id, Model model) {
-        RecipeCommand recipe = service.findCommandById(Long.valueOf(id));
+        RecipeCommand recipe = recipeService.findCommandById(Long.valueOf(id));
 
         if (recipe == null) {
             return "redirect:/error";
@@ -51,7 +51,7 @@ public class RecipeController {
 
     @PostMapping
     public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
-        RecipeCommand savedCommand = service.saveRecipeCommand(command);
+        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
@@ -59,7 +59,10 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("{id}/delete")
     public String deleteRecipe(@PathVariable String id) {
-        service.deleteById(Long.valueOf(id));
+
+        log.debug("Deleting id: " + id);
+
+        recipeService.deleteById(Long.valueOf(id));
         return "redirect:/";
     }
 }

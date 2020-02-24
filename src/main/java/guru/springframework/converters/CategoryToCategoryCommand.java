@@ -13,6 +13,6 @@ public class CategoryToCategoryCommand implements Converter<Category, CategoryCo
     @Override
     public CategoryCommand convert(Category source) {
         return (source == null) ? null :
-                CategoryCommand.builder().id(source.getId()).name(source.getName()).build();
+                CategoryCommand.builder().id(source.getId()).description(source.getDescription()).build();
     }
 }

@@ -49,8 +49,8 @@ class UnitOfMeasureServiceImplTest {
     @Test
     void listAllUoms() {
         //given
-        Set<UnitOfMeasure> set = Set.of(UnitOfMeasure.builder().id(ID).unitOfMeasure(CUPS).build()
-                , UnitOfMeasure.builder().id(ID+1).unitOfMeasure(TEASPOONS).build());
+        Set<UnitOfMeasure> set = Set.of(UnitOfMeasure.builder().id(ID).description(CUPS).build()
+                , UnitOfMeasure.builder().id(ID+1).description(TEASPOONS).build());
 
         //when
         when(repository.findAll()).thenReturn(set);
@@ -59,7 +59,7 @@ class UnitOfMeasureServiceImplTest {
         Set<UnitOfMeasureCommand> list = service.listAllUoms();
         assertEquals(list.size(), 2);
         assertEquals(1, list.stream().filter(uom -> uom.getId().equals(ID)).count());
-        assertEquals(1, list.stream().filter(uom -> uom.getUnitOfMeasure().equals(TEASPOONS)).count());
+        assertEquals(1, list.stream().filter(uom -> uom.getDescription().equals(TEASPOONS)).count());
         verify(repository, times(1)).findAll();
     }
 }
