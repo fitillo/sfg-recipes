@@ -4,6 +4,7 @@ import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.services.RecipeService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,6 +68,14 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("404error"));
+    }
+
+    @Test
+    void getRecipeByIdNFEx() throws Exception {
+        mockMvc.perform(get("/recipe/text/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
     }
 
     @Test
