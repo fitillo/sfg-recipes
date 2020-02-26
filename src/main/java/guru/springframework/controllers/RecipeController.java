@@ -7,14 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 @RequestMapping("/recipe/")
 public class RecipeController {
 
+    public static final String RECIPEFORM = "recipe/recipeform";
     private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -36,7 +40,7 @@ public class RecipeController {
         model.addAttribute("recipe", new RecipeCommand());
 
 
-        return "recipe/recipeform";
+        return RECIPEFORM;
     }
 
     @GetMapping("{id}/update")
@@ -47,11 +51,19 @@ public class RecipeController {
             return "redirect:/error";
         }
         model.addAttribute("recipe", recipe);
-        return "recipe/recipeform";
+        return RECIPEFORM;
     }
 
     @PostMapping
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            result.reject("Error in several fields");
+            model.addAttribute("recipe", command);
+            return RECIPEFORM;
+        }
+
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
