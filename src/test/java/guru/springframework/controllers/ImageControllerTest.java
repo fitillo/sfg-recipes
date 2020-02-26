@@ -3,6 +3,7 @@ package guru.springframework.controllers;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.ImageService;
 import guru.springframework.services.RecipeService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +39,8 @@ class ImageControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(ExceptionHandlerController.class).build();
     }
 
     @Test
@@ -56,6 +58,14 @@ class ImageControllerTest {
 
         verify(recipeService).findCommandById(anyLong());
 
+    }
+
+    @Test
+    void getImageFormWrongId() throws Exception {
+        mockMvc.perform(get("/recipe/text/image"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
     }
 
     @Test

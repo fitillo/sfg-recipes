@@ -6,6 +6,7 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,8 @@ class IngredientControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(ExceptionHandlerController.class).build();
     }
 
     @Test
@@ -58,6 +60,14 @@ class IngredientControllerTest {
                 .andExpect(view().name("recipe/ingredient/list"));
 
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    void testListIngredientsWrongId() throws Exception {
+        mockMvc.perform(get("/recipe/text/ingredients"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
     }
 
     @Test
@@ -78,6 +88,14 @@ class IngredientControllerTest {
     }
 
     @Test
+    void testShowIngredientWrongId() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/text/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
+    }
+
+    @Test
     void testUpdateRecipeIngredient() throws Exception {
         //given
         IngredientCommand command = IngredientCommand.builder().build();
@@ -95,6 +113,14 @@ class IngredientControllerTest {
 
         verify(ingredientService).findByRecipeIdAndIngredientId(anyLong(), anyLong());
         verify(unitOfMeasureService).listAllUoms();
+    }
+
+    @Test
+    void testUpdateIngredientWrongId() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/text/update"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
     }
 
     @Test
@@ -136,11 +162,19 @@ class IngredientControllerTest {
     }
 
     @Test
-    void testDeleteRecipe() throws Exception {
+    void testDeleteRecipeIngredient() throws Exception {
         mockMvc.perform(get("/recipe/"+ID+"/ingredient/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/"+ID+"/ingredients"));
 
         verify(ingredientService).deleteByRecipeIdIngredientId(anyLong(), anyLong());
+    }
+
+    @Test
+    void testDeleteRecipeIngredientWrongId() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/text/delete"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attribute("exception", Matchers.containsString("java.lang.NumberFormatException: For input string: \"text\"")));
     }
 }
