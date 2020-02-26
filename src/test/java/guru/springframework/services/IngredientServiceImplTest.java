@@ -9,6 +9,7 @@ import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +87,7 @@ class IngredientServiceImplTest {
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
 
         //then
-        assertThrows(RuntimeException.class, () -> service.findByRecipeIdAndIngredientId(recipe.getId(), ID+1));
+        assertThrows(NotFoundException.class, () -> service.findByRecipeIdAndIngredientId(recipe.getId(), ID+1));
     }
 
     @Test

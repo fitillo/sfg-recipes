@@ -1,6 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -14,8 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +58,14 @@ class RecipeServiceImplTest {
         when(repository.findById(guacamoleId)).thenReturn(Optional.of(guacamole));
         assertEquals(guacamoleId, service.findById(guacamoleId).getId());
         verify(repository, times(1)).findById(guacamoleId);
+    }
+
+    @Test
+    void getRecipeByIdTestNotFound() {
+        Optional<Recipe> noRecipe = Optional.empty();
+        when(repository.findById(anyLong())).thenReturn(noRecipe);
+
+        assertThrows(NotFoundException.class, () -> service.findById(anyLong()));
     }
 
     @Test

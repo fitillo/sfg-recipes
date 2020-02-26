@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/error/")
 public class ErrorController {
 
-    @GetMapping
-    @RequestMapping("")
+    @GetMapping("")
     public String errorPage(Model model) {
         return "error";
     }

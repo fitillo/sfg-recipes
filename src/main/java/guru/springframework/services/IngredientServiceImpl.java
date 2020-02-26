@@ -5,6 +5,7 @@ import guru.springframework.converters.IngredientCommandToIngredient;
 import guru.springframework.converters.IngredientToIngredientCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class IngredientServiceImpl implements IngredientService {
             log.error("recipe id not found. Id: " + recipeId);
         }
 
-        Recipe recipe = recipeOptional.orElseThrow(RuntimeException::new);
+        Recipe recipe = recipeOptional.orElseThrow(NotFoundException::new);
 
         Optional<IngredientCommand> command = recipe.getIngredients().stream()
                 .filter(ingredient -> ingredient.getId().equals(ingredientId))
@@ -50,7 +51,7 @@ public class IngredientServiceImpl implements IngredientService {
             log.error("Ingredient id not found: " + ingredientId);
         }
 
-        return command.orElseThrow(RuntimeException::new);
+        return command.orElseThrow(NotFoundException::new);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredient.setAmount(command.getAmount());
                 ingredient.setDescription(command.getDescription());
                 ingredient.setUom(unitOfMeasureRepository.findById(command.getUom().getId())
-                    .orElseThrow(() -> new RuntimeException("UOM NOT FOUND"))); //todo error handling
+                    .orElseThrow(() -> new NotFoundException("UOM NOT FOUND"))); //todo error handling
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
